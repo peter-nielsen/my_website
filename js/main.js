@@ -1,0 +1,1 @@
+/* JavaScript by Peter Nielsen, 2016 */
