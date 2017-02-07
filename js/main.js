@@ -1,11 +1,12 @@
 //initialize function called when the script loads
 var mydiv = document.getElementById("mydiv");
 mydiv.innerHTML = "Hello World";
-console.log('in javascript');
+
 function initialize() {
     
     cities();
-    
+    jqueryajax();
+    debugAjax();
 };
 
 //function to create a table with cities and their populations
@@ -131,6 +132,60 @@ function addEvents(){
 //activates the function when clicked
 	$('table').on('click', clickme);
 };
+//uses jquery to call the geojson file
+function jqueryajax(){
+//variable to store data once called   
+    var mydata;
+//function to access the data   
+    $.ajax('data/MegaCities.geojson',{
+//sets the data type       
+        'dataType': 'json',
+//calls the callback function if the data is found        
+        'success' : jQueryCallback
+    });
+//callback function    
+    function jQueryCallback(response){
+//sets the variable mydata to be the same as the callback response   
+        mydata = response;
+//logs the array with the data to the console    
+    console.log(mydata);
+};
+//this log statement comes up undefined because mydata is not set outside of the callback    
+console.log(mydata);
+};
+
+
+
+
+//debug ajax function
+function debugAjax(){
+//creates a variable to store data
+	var mydata;
+//access the geojson file
+	$.ajax("data/MegaCities.geojson", {
+//sets the data tyoe to json		
+        'dataType': "json",
+//if data is found sends to debug callback
+		'success': debugCallback
+        });
+//debug callback function       
+       function debugCallback(response){
+//sets mydata to the response given	
+           mydata = response;
+//log statemnt to confirm the array is filled           
+           console.log(mydata);
+//appends the div to add the title " GeoJSON data:" and then stringifies the json file to be displayed	
+    $(mydiv).append('<br>GeoJSON data:<br/>'  + JSON.stringify(mydata)); 
+           
+    };	
+}
+       
+
+
+
+
+
+
 
 //call the initialize function when the document has loaded
 $(document).ready(initialize);
